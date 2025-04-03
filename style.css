@@ -54,7 +54,8 @@ p#status {
     font-weight: bold;
     margin-top: 20px;
     font-size: 1.2em;
-    text-align: left; /* Left-justify the status message */
+    color: lightgrey; /* Set the text color to gray */
+    text-align: left; /* Ensure the text is left-aligned */
 }
 
 /* Align input fields and labels on the same line */

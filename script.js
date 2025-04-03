@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const textElement = document.getElementById('text');
-    const startButton = document.getElementById('startButton');
+    const wordList = document.getElementById('wordList');
     const showWordsButton = document.getElementById('showWordsButton');
+    const startButton = document.getElementById('startButton');
+    const textElement = document.getElementById('text');
+    const statusElement = document.getElementById('status');
     const wordCountInput = document.getElementById('wordCountInput');
     const delayInput = document.getElementById('delayInput');
-    const statusElement = document.getElementById('status');
-    const wordList = document.getElementById('wordList');
 
     let allWords = [];
     let currentIndex = 0;
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wordCountInput.max = allWords.length;
             wordCountInput.value = Math.min(3, allWords.length); // Default to 3 or max available words
             startButton.disabled = false;
-            statusElement.textContent = 'Ready.';
+            statusElement.textContent = 'Ready';
         })
         .catch(error => {
             console.error(error);
@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let wordCount = parseInt(wordCountInput.value, 10);
         wordList.innerHTML = '';
         textElement.textContent = '';
+        showWordsButton.textContent = 'Show Word List'; // Reset the button label
+        wordList.style.display = 'none'; // Ensure the word list is hidden
 
         if (isNaN(wordCount) || wordCount < 1 || wordCount > allWords.length) {
             alert(`Enter a number between 1 and ${allWords.length}.`);
@@ -42,13 +44,28 @@ document.addEventListener('DOMContentLoaded', () => {
         currentIndex = 0;
         startButton.disabled = true;
         showWordsButton.disabled = true;
-        statusElement.textContent = 'Practicing...';
+        statusElement.textContent = 'Session in progress...';
+
+        // Change the label to "New Session" after the first click
+        startButton.textContent = 'New Session';
+
         displayAndSpeakNextWord();
     });
 
     showWordsButton.addEventListener('click', () => {
-        displayWordList();
+        if (wordList.style.display === 'none' || wordList.style.display === '') {
+            displayWordList();
+            wordList.style.display = 'block';
+            showWordsButton.textContent = 'Hide Word List';
+        } else {
+            wordList.style.display = 'none';
+            showWordsButton.textContent = 'Show Word List';
+        }
     });
+
+    function displayWordList() {
+        wordList.innerHTML = randomizedWords.map(word => `<li>${word}</li>`).join('');
+    }
 
     function displayAndSpeakNextWord() {
         if (currentIndex >= randomizedWords.length) {
@@ -80,21 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
         speechSynthesis.speak(utterance);
     }
 
-    function displayWordList() {
-        wordList.innerHTML = '';
-        randomizedWords.forEach(word => {
-            const li = document.createElement('li');
-            li.textContent = word;
-            wordList.appendChild(li);
-        });
-    }
-
     function shuffleArray(array) {
-        let newArr = array.slice();
-        for (let i = newArr.length - 1; i > 0; i--) {
+        for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+            [array[i], array[j]] = [array[j], array[i]];
         }
-        return newArr;
+        return array;
     }
 });
