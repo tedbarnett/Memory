@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allWords = [];
     let currentIndex = 0;
-    let delay = 3000;
     let randomizedWords = [];
 
     fetch('nouns.txt')
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startButton.addEventListener('click', () => {
         let wordCount = parseInt(wordCountInput.value, 10);
-        delay = parseInt(delayInput.value, 10) * 1000;
         wordList.innerHTML = '';
         textElement.textContent = '';
 
@@ -45,20 +43,23 @@ document.addEventListener('DOMContentLoaded', () => {
         startButton.disabled = true;
         showWordsButton.disabled = true;
         statusElement.textContent = 'Practicing...';
-        displayWords();
+        displayAndSpeakNextWord();
     });
 
     showWordsButton.addEventListener('click', () => {
         displayWordList();
     });
 
-    function displayWords() {
+    function displayAndSpeakNextWord() {
         if (currentIndex < randomizedWords.length) {
             const word = randomizedWords[currentIndex];
             textElement.textContent = word;
-            speakWord(word);
-            currentIndex++;
-            setTimeout(displayWords, delay);
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.onend = () => {
+                currentIndex++;
+                setTimeout(displayAndSpeakNextWord, parseInt(delayInput.value, 10) * 1000);
+            };
+            window.speechSynthesis.speak(utterance);
         } else {
             textElement.textContent = 'Done!';
             startButton.disabled = false;
@@ -74,11 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
             li.textContent = word;
             wordList.appendChild(li);
         });
-    }
-
-    function speakWord(word) {
-        const utterance = new SpeechSynthesisUtterance(word);
-        window.speechSynthesis.speak(utterance);
     }
 
     function shuffleArray(array) {
