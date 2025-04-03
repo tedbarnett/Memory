@@ -1,0 +1,37 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE/Editor directories
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.history/
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*~
+*.tmp
+*.swp
+*.swo
+
+# Optional: If you were using Node.js dependencies (you are NOT currently)
+# node_modules/
+# package-lock.json # Or yarn.lock, pnpm-lock.yaml
+
+# NOTE: nouns.txt is NOT ignored by default because the application
+# requires this file to function when cloned or deployed.
+# If your noun list is private or changes locally often without needing
+# to be tracked, you can add "nouns.txt" on a new line above.
