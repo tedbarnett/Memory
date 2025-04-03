@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             allWords = data.split(/\r?\n/).filter(Boolean);
             wordCountInput.max = allWords.length;
-            wordCountInput.value = Math.min(10, allWords.length);
+            wordCountInput.value = Math.min(3, allWords.length); // Default to 3 or max available words
             startButton.disabled = false;
             statusElement.textContent = 'Ready.';
         })
@@ -51,21 +51,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function displayAndSpeakNextWord() {
-        if (currentIndex < randomizedWords.length) {
-            const word = randomizedWords[currentIndex];
-            textElement.textContent = word;
-            const utterance = new SpeechSynthesisUtterance(word);
-            utterance.onend = () => {
-                currentIndex++;
-                setTimeout(displayAndSpeakNextWord, parseInt(delayInput.value, 10) * 1000);
-            };
-            window.speechSynthesis.speak(utterance);
-        } else {
-            textElement.textContent = 'Done!';
+        if (currentIndex >= randomizedWords.length) {
+            statusElement.textContent = 'Session complete!';
+            textElement.textContent = ''; // Clear the last word from the screen
             startButton.disabled = false;
             showWordsButton.disabled = false;
-            statusElement.textContent = 'Ready.';
+            return; // Exit the function if all words are displayed
         }
+
+        const word = randomizedWords[currentIndex];
+        textElement.textContent = word;
+
+        // Use speech synthesis to speak the word
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.onend = () => {
+            // Wait for the speech to finish before proceeding to the next word
+            currentIndex++;
+            if (currentIndex < randomizedWords.length) {
+                setTimeout(displayAndSpeakNextWord, parseInt(delayInput.value, 10) * 1000);
+            } else {
+                statusElement.textContent = 'Session complete!';
+                textElement.textContent = ''; // Clear the last word from the screen
+                startButton.disabled = false;
+                showWordsButton.disabled = false;
+            }
+        };
+
+        speechSynthesis.speak(utterance);
     }
 
     function displayWordList() {

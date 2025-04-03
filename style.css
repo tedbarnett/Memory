@@ -1,36 +1,77 @@
-/* Find this rule in your style.css */
-button#showWordsButton {
-    /* background-color: #6c757d; */ /* Remove or comment out this line */
+/* General styles for the body */
+body {
+    font-family: Arial, sans-serif; /* Default sans-serif font */
+    margin: 20px;
+    line-height: 1.6;
+    background-color: #f9f9f9; /* Light background for better contrast */
+    color: #333; /* Darker text for readability */
+    text-align: left; /* Ensure all text is left-justified */
 }
 
-/* Keep the rest of your style.css the same, including: */
-button {
-    background-color: #007bff; /* Default blue */
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+/* Header styles */
+h1 {
+    font-weight: bold;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: left; /* Left-justify the title */
+}
+
+/* Paragraph styles */
+p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    text-align: left; /* Left-justify paragraphs */
+}
+
+/* Input and label styles */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left; /* Left-justify labels */
+}
+
+/* Practice word styles */
+h2#text {
+    font-family: "Times New Roman", Times, serif; /* Times font for practice words */
+    font-size: 2em;
+    margin: 20px 0;
+    color: #444; /* Slightly darker text for contrast */
+    text-align: left; /* Left-justify practice words */
+}
+
+/* Word list styles */
+ol#wordList {
+    font-family: Arial, sans-serif; /* Sans-serif for the word list */
     font-size: 1em;
-    transition: background-color 0.3s ease, opacity 0.3s ease; /* Added opacity transition */
-    margin: 5px;
+    margin-top: 20px;
+    padding-left: 20px;
+    text-align: left; /* Left-justify the word list */
 }
 
-button:disabled {
-    background-color: #cccccc; /* Gray when disabled */
-    cursor: not-allowed;
-    opacity: 0.6;
+/* Status message styles */
+p#status {
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 1.2em;
+    text-align: left; /* Left-justify the status message */
 }
 
-button:hover:not(:disabled) { /* Apply hover only when NOT disabled */
-    opacity: 0.85; /* Slightly less opaque than fully transparent */
+/* Align input fields and labels on the same line */
+div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Add spacing between rows */
 }
 
-/* If you want specific hover colors for enabled buttons: */
-button#startButton:hover:not(:disabled) {
-    background-color: #0056b3;
+label {
+    margin-left: 10px; /* Add spacing between the input/select and the label */
 }
-/* Removed specific hover for showWordsButton to keep it blue */
 
-/* The rest of your CSS rules */
-/* ... */
+#wordCountInput{
+    width: 38px; /* Set the same width for both fields */
+}
+
+#delayInput {
+    width: 45px; /* Set the same width for both fields */
+}

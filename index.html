@@ -5,22 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Palace Practice Tool</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <h1>Melanie's Memory Practice Tool</h1>
-    <p>Words will be loaded from <strong>words.txt</strong>.</p>
+    <h1>Memory Practice</h1>
 
     <div>
-        <label for="wordCountInput">Number of Nouns:</label>
-        <input type="number" id="wordCountInput" min="1">
+        <input type="number" id="wordCountInput" min="1" value="3">
+        <label for="wordCountInput"> words per session</label>
     </div>
 
     <div>
-        <label for="delayInput">Delay between words (seconds):</label>
-        <input type="number" id="delayInput" value="3" min="1">
+        <select id="delayInput">
+            <option value="0">0</option>
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <label for="delayInput"> second delay</label>
     </div>
 
-    <button id="startButton" disabled>Start Practice</button>
+    <button id="startButton" disabled>Start Session</button>
     <button id="showWordsButton" disabled>Show Word List</button>
 
     <p id="status">Initializing...</p>
