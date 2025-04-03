@@ -76,3 +76,25 @@ label {
 #delayInput {
     width: 45px; /* Set the same width for both fields */
 }
+
+/* Button styles */
+button {
+    padding: 18px 30px; /* Increase padding for larger buttons */
+    font-size: 1.2em; /* Increase font size for better readability */
+    border-radius: 5px; /* Keep rounded corners */
+    background-color: #007bff; /* Default blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, opacity 0.3s ease; /* Smooth hover effect */
+}
+
+button:hover:not(:disabled) {
+    opacity: 0.85; /* Slightly dim on hover */
+}
+
+button:disabled {
+    background-color: #cccccc; /* Gray background when disabled */
+    cursor: not-allowed; /* Show not-allowed cursor */
+    opacity: 0.6; /* Reduce opacity */
+}
