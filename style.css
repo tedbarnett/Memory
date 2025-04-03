@@ -1,123 +1,36 @@
-body {
-    font-family: sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align top */
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
+/* Find this rule in your style.css */
+button#showWordsButton {
+    /* background-color: #6c757d; */ /* Remove or comment out this line */
 }
 
-.container {
-    background-color: #fff;
-    padding: 25px 35px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
-    margin-top: 20px; /* Add some margin at the top */
-}
-
-h1 {
-    color: #444;
-    margin-bottom: 20px;
-}
-
-p {
-    margin-bottom: 15px; /* Consistent spacing for paragraphs */
-}
-
-code {
-    background-color: #e9e9e9;
-    padding: 2px 4px;
-    border-radius: 3px;
-}
-
-.settings {
-    margin-bottom: 25px;
-    text-align: left;
-}
-
-.setting {
-    margin-bottom: 15px;
-}
-
-.setting label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.setting input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Include padding in width */
-}
-
+/* Keep the rest of your style.css the same, including: */
 button {
-    background-color: #007bff;
+    background-color: #007bff; /* Default blue */
     color: white;
     border: none;
-    padding: 12px 20px; /* Adjusted padding slightly */
+    padding: 12px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s ease;
-    margin: 5px; /* Add margin around buttons */
+    transition: background-color 0.3s ease, opacity 0.3s ease; /* Added opacity transition */
+    margin: 5px;
 }
-
-button#showWordsButton { /* Style for the new button */
-    background-color: #6c757d; /* A different color */
-}
-
-button:hover {
-    opacity: 0.9; /* Slight fade on hover */
-}
-
-button#startButton:hover {
-    background-color: #0056b3;
-}
-button#showWordsButton:hover {
-    background-color: #5a6268;
-}
-
 
 button:disabled {
-    background-color: #cccccc;
+    background-color: #cccccc; /* Gray when disabled */
     cursor: not-allowed;
     opacity: 0.6;
 }
 
-#status {
-    margin-top: 20px;
-    font-weight: bold;
-    color: #555;
-    min-height: 1.6em; /* Prevent layout shifts based on line-height */
-    line-height: 1.6em;
+button:hover:not(:disabled) { /* Apply hover only when NOT disabled */
+    opacity: 0.85; /* Slightly less opaque than fully transparent */
 }
 
-#wordListDisplay {
-    margin-top: 20px;
-    text-align: left; /* Align list items left */
-    padding: 10px;
-    border: 1px solid #eee; /* Optional border */
-    border-radius: 5px;
-    min-height: 30px; /* Placeholder height */
-    background-color: #f9f9f9; /* Slight background */
+/* If you want specific hover colors for enabled buttons: */
+button#startButton:hover:not(:disabled) {
+    background-color: #0056b3;
 }
+/* Removed specific hover for showWordsButton to keep it blue */
 
-#wordListDisplay ol {
-    padding-left: 25px; /* Indent ordered list */
-    margin: 0;
-}
-
-#wordListDisplay li {
-    margin-bottom: 5px; /* Spacing between list items */
-}
+/* The rest of your CSS rules */
+/* ... */
