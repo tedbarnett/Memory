@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordCountInput = document.getElementById('wordCountInput');
     const delayInput = document.getElementById('delayInput');
     const statusElement = document.getElementById('status');
+    const wordList = document.getElementById('wordList');
 
     let words = [];
     let currentIndex = 0;
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
         let wordCount = parseInt(wordCountInput.value, 10);
         delay = parseInt(delayInput.value, 10) * 1000;
+        wordList.innerHTML = ''; // Clear previous list
 
         if (isNaN(wordCount) || wordCount < 1 || wordCount > words.length) {
             alert(`Enter a number between 1 and ${words.length}.`);
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        alert(words.slice(0, wordCount).join(', '));
+        displayWordList(wordCount);
     });
 
     function displayWords(wordCount) {
@@ -65,6 +67,15 @@ document.addEventListener('DOMContentLoaded', () => {
             startButton.disabled = false;
             showWordsButton.disabled = false;
             statusElement.textContent = 'Ready.';
+        }
+    }
+
+    function displayWordList(wordCount) {
+        wordList.innerHTML = ''; // Clear existing words
+        for (let i = 0; i < wordCount; i++) {
+            let li = document.createElement('li');
+            li.textContent = words[i];
+            wordList.appendChild(li);
         }
     }
 });
