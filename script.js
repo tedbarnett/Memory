@@ -54,7 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayWords() {
         if (currentIndex < randomizedWords.length) {
-            textElement.textContent = randomizedWords[currentIndex];
+            const word = randomizedWords[currentIndex];
+            textElement.textContent = word;
+            speakWord(word);
             currentIndex++;
             setTimeout(displayWords, delay);
         } else {
@@ -74,7 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Fisher-Yates shuffle for randomizing arrays
+    function speakWord(word) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        window.speechSynthesis.speak(utterance);
+    }
+
     function shuffleArray(array) {
         let newArr = array.slice();
         for (let i = newArr.length - 1; i > 0; i--) {
