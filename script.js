@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let wordCount = parseInt(wordCountInput.value, 10);
         wordList.innerHTML = '';
         textElement.textContent = '';
-        showWordsButton.textContent = 'Show Word List'; // Reset the button label
+        showWordsButton.textContent = 'Show List'; // Reset the button label
         wordList.style.display = 'none'; // Ensure the word list is hidden
 
         if (isNaN(wordCount) || wordCount < 1 || wordCount > allWords.length) {
@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (wordList.style.display === 'none' || wordList.style.display === '') {
             displayWordList();
             wordList.style.display = 'block';
-            showWordsButton.textContent = 'Hide Word List';
+            showWordsButton.textContent = 'Hide List';
         } else {
             wordList.style.display = 'none';
-            showWordsButton.textContent = 'Show Word List';
+            showWordsButton.textContent = 'Show List';
         }
     });
 

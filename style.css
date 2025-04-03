@@ -79,8 +79,8 @@ label {
 
 /* Button styles */
 button {
-    padding: 18px 30px; /* Default padding for desktop */
-    font-size: 1.2em; /* Default font size for desktop */
+    padding: 8px 14px; /* Reduce padding by 30% */
+    font-size: 0.8em; /* Reduce font size by 30% */
     border-radius: 5px; /* Keep rounded corners */
     background-color: #007bff; /* Default blue background */
     color: white; /* White text */
@@ -102,7 +102,7 @@ button:disabled {
 /* Mobile-specific styles */
 @media (max-width: 768px) {
     button {
-        padding: 36px 60px; /* Double the padding for larger buttons */
-        font-size: 1.5em; /* Increase font size for better readability */
+        padding: 25px 42px; /* Reduce mobile padding by 30% */
+        font-size: 1.05em; /* Reduce mobile font size by 30% */
     }
 }
