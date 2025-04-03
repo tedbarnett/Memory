@@ -7,9 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusElement = document.getElementById('status');
     const wordList = document.getElementById('wordList');
 
-    let words = [];
+    let allWords = [];
     let currentIndex = 0;
-    let delay = 3000; // default delay 3 seconds
+    let delay = 3000;
+    let randomizedWords = [];
 
     fetch('nouns.txt')
         .then(response => {
@@ -17,11 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.text();
         })
         .then(data => {
-            words = data.split(/\r?\n/).filter(Boolean);
-            wordCountInput.max = words.length;
-            wordCountInput.value = Math.min(10, words.length);
+            allWords = data.split(/\r?\n/).filter(Boolean);
+            wordCountInput.max = allWords.length;
+            wordCountInput.value = Math.min(10, allWords.length);
             startButton.disabled = false;
-            showWordsButton.disabled = false;
             statusElement.textContent = 'Ready.';
         })
         .catch(error => {
@@ -32,36 +32,31 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
         let wordCount = parseInt(wordCountInput.value, 10);
         delay = parseInt(delayInput.value, 10) * 1000;
-        wordList.innerHTML = ''; // Clear previous list
+        wordList.innerHTML = '';
+        textElement.textContent = '';
 
-        if (isNaN(wordCount) || wordCount < 1 || wordCount > words.length) {
-            alert(`Enter a number between 1 and ${words.length}.`);
+        if (isNaN(wordCount) || wordCount < 1 || wordCount > allWords.length) {
+            alert(`Enter a number between 1 and ${allWords.length}.`);
             return;
         }
 
+        randomizedWords = shuffleArray(allWords).slice(0, wordCount);
         currentIndex = 0;
         startButton.disabled = true;
         showWordsButton.disabled = true;
         statusElement.textContent = 'Practicing...';
-        displayWords(wordCount);
+        displayWords();
     });
 
     showWordsButton.addEventListener('click', () => {
-        let wordCount = parseInt(wordCountInput.value, 10);
-
-        if (isNaN(wordCount) || wordCount < 1 || wordCount > words.length) {
-            alert(`Enter a number between 1 and ${words.length}.`);
-            return;
-        }
-
-        displayWordList(wordCount);
+        displayWordList();
     });
 
-    function displayWords(wordCount) {
-        if (currentIndex < wordCount) {
-            textElement.textContent = words[currentIndex];
+    function displayWords() {
+        if (currentIndex < randomizedWords.length) {
+            textElement.textContent = randomizedWords[currentIndex];
             currentIndex++;
-            setTimeout(() => displayWords(wordCount), delay);
+            setTimeout(displayWords, delay);
         } else {
             textElement.textContent = 'Done!';
             startButton.disabled = false;
@@ -70,12 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function displayWordList(wordCount) {
-        wordList.innerHTML = ''; // Clear existing words
-        for (let i = 0; i < wordCount; i++) {
-            let li = document.createElement('li');
-            li.textContent = words[i];
+    function displayWordList() {
+        wordList.innerHTML = '';
+        randomizedWords.forEach(word => {
+            const li = document.createElement('li');
+            li.textContent = word;
             wordList.appendChild(li);
+        });
+    }
+
+    // Fisher-Yates shuffle for randomizing arrays
+    function shuffleArray(array) {
+        let newArr = array.slice();
+        for (let i = newArr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
         }
+        return newArr;
     }
 });
