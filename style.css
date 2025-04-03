@@ -77,16 +77,27 @@ label {
     width: 45px; /* Set the same width for both fields */
 }
 
-/* Button styles */
+/* Button container styles */
+div.button-container {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space buttons evenly */
+    align-items: center; /* Align buttons vertically */
+    gap: 10px; /* Add spacing between buttons */
+    width: 100%; /* Ensure the container spans the full width */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
 button {
-    padding: 8px 14px; /* Reduce padding by 30% */
-    font-size: 0.8em; /* Reduce font size by 30% */
+    flex: 1; /* Make buttons take up equal space */
+    padding: 12px 20px; /* Adjust padding for better size */
+    font-size: 1em; /* Set a consistent font size */
     border-radius: 5px; /* Keep rounded corners */
     background-color: #007bff; /* Default blue background */
     color: white; /* White text */
     border: none; /* Remove border */
     cursor: pointer; /* Pointer cursor on hover */
     transition: background-color 0.3s ease, opacity 0.3s ease; /* Smooth hover effect */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 button:hover:not(:disabled) {
@@ -99,10 +110,15 @@ button:disabled {
     opacity: 0.6; /* Reduce opacity */
 }
 
-/* Mobile-specific styles */
+/* Button container for alignment */
+button + button {
+    margin-left: 4%; /* Add spacing between buttons */
+}
+
 @media (max-width: 768px) {
-    button {
-        padding: 25px 42px; /* Reduce mobile padding by 30% */
-        font-size: 1.05em; /* Reduce mobile font size by 30% */
+    div.button-container {
+        display: flex;
+        justify-content: space-between; /* Ensure buttons are evenly spaced */
+        flex-wrap: nowrap; /* Prevent buttons from wrapping to the next line */
     }
 }
