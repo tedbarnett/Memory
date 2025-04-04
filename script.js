@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wordCountInput.max = allWords.length;
             wordCountInput.value = Math.min(3, allWords.length); // Default to 3 or max available words
             startButton.disabled = false;
-            statusElement.textContent = 'Ready.';
+            statusElement.textContent = 'Ready';
         })
         .catch(error => {
             console.error(error);
