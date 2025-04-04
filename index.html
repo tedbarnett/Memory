@@ -43,5 +43,66 @@
     <ol id="wordList"></ol>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const delayInputDiv = document.querySelector('#delayInput').parentElement;
+
+            if (isIOS) {
+                // Create a new row for the voice selector
+                const voiceSelectorDiv = document.createElement('div');
+                const voiceSelectorLabel = document.createElement('label');
+                const voiceSelector = document.createElement('select');
+
+                voiceSelector.id = 'voiceSelector';
+                voiceSelectorLabel.setAttribute('for', 'voiceSelector');
+                voiceSelectorLabel.textContent = ' Siri Voice';
+
+                voiceSelectorDiv.appendChild(voiceSelector);
+                voiceSelectorDiv.appendChild(voiceSelectorLabel);
+                delayInputDiv.parentNode.insertBefore(voiceSelectorDiv, delayInputDiv.nextSibling);
+
+                // Populate the voice selector with available Siri voices
+                const populateVoices = () => {
+                    const voices = speechSynthesis.getVoices();
+                    const siriVoices = voices.filter(voice => voice.name.includes('Siri'));
+
+                    if (siriVoices.length > 0) {
+                        siriVoices.forEach((voice, index) => {
+                            const option = document.createElement('option');
+                            option.value = voice.name;
+                            option.textContent = voice.name;
+                            if (index === 0) option.selected = true; // Default to the first Siri voice
+                            voiceSelector.appendChild(option);
+                        });
+                    } else {
+                        const option = document.createElement('option');
+                        option.value = 'NOT_AVAILABLE';
+                        option.textContent = 'NOT AVAILABLE';
+                        voiceSelector.appendChild(option);
+                    }
+                };
+
+                // Wait for voices to load and populate the selector
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = populateVoices;
+                } else {
+                    populateVoices();
+                }
+
+                // Update the selected voice in the script
+                voiceSelector.addEventListener('change', () => {
+                    const selectedVoiceName = voiceSelector.value;
+                    if (selectedVoiceName !== 'NOT_AVAILABLE') {
+                        const selectedVoice = speechSynthesis.getVoices().find(voice => voice.name === selectedVoiceName);
+                        window.selectedVoice = selectedVoice; // Store the selected voice globally
+                    }
+                });
+
+                // Set the default voice globally
+                window.selectedVoice = null;
+            }
+        });
+    </script>
 </body>
 </html>

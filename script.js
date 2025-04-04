@@ -81,6 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Use speech synthesis to speak the word
         const utterance = new SpeechSynthesisUtterance(word);
+
+        // Use the selected voice if available
+        if (window.selectedVoice) {
+            utterance.voice = window.selectedVoice;
+        }
+
         utterance.onend = () => {
             // Wait for the speech to finish before proceeding to the next word
             currentIndex++;
