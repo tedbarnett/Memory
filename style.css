@@ -84,6 +84,8 @@ div.button-container {
     align-items: center; /* Align buttons vertically */
     gap: 10px; /* Add spacing between buttons */
     width: 100%; /* Ensure the container spans the full width */
+    max-width: 400px; /* Limit the maximum width of the button container */
+    margin: 0; /* Center the container horizontally */
     box-sizing: border-box; /* Include padding in width calculation */
 }
 
