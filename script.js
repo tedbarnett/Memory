@@ -82,10 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Use speech synthesis to speak the word
         const utterance = new SpeechSynthesisUtterance(word);
 
-        // Use the selected voice if available
-        if (window.selectedVoice) {
-            utterance.voice = window.selectedVoice;
-        }
+        // Use the default voice
+        speechSynthesis.speak(utterance);
 
         utterance.onend = () => {
             // Wait for the speech to finish before proceeding to the next word
@@ -99,8 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 showWordsButton.disabled = false;
             }
         };
-
-        speechSynthesis.speak(utterance);
     }
 
     function shuffleArray(array) {
@@ -109,43 +105,5 @@ document.addEventListener('DOMContentLoaded', () => {
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
-    }
-
-    const populateVoices = () => {
-        const voices = speechSynthesis.getVoices();
-        const siriVoices = voices.filter(voice => voice.name.includes('Siri'));
-
-        const voiceSelectorDiv = document.getElementById('voiceSelector')?.parentElement;
-
-        if (siriVoices.length > 0) {
-            const voiceSelector = document.getElementById('voiceSelector');
-            voiceSelector.innerHTML = ''; // Clear any existing options
-
-            siriVoices.forEach((voice, index) => {
-                const option = document.createElement('option');
-                option.value = voice.name;
-                option.textContent = voice.name;
-                if (index === 0) option.selected = true; // Default to the first Siri voice
-                voiceSelector.appendChild(option);
-            });
-        } else if (voiceSelectorDiv) {
-            // Remove the voice selector line if no Siri voices are available
-            voiceSelectorDiv.remove();
-        }
-    };
-
-    // Force voices to load by calling getVoices multiple times
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.onvoiceschanged = populateVoices;
-    } else {
-        // Retry mechanism for iOS
-        let retries = 0;
-        const interval = setInterval(() => {
-            populateVoices();
-            retries++;
-            if (speechSynthesis.getVoices().length > 0 || retries > 10) {
-                clearInterval(interval);
-            }
-        }, 500); // Retry every 500ms up to 5 seconds
     }
 });
