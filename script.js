@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             allWords = data.split(/\r?\n/).filter(Boolean);
             wordCountInput.max = allWords.length;
-            wordCountInput.value = Math.min(3, allWords.length); // Default to 3 or max available words
+            wordCountInput.value = Math.min(10, allWords.length); // Default to 3 or max available words
             startButton.disabled = false;
             statusElement.textContent = 'Ready';
         })
