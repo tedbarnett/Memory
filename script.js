@@ -6,10 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusElement = document.getElementById('status');
     const wordCountInput = document.getElementById('wordCountInput');
     const delayInput = document.getElementById('delayInput');
+    const inputTypeSelect = document.getElementById('inputType');
 
     let allWords = [];
     let currentIndex = 0;
-    let randomizedWords = [];
+    let currentItems = [];
+    let currentType = 'words';
 
     fetch('nouns.txt')
         .then(response => {
@@ -18,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             allWords = data.split(/\r?\n/).filter(Boolean);
-            wordCountInput.max = allWords.length;
-            wordCountInput.value = Math.min(10, allWords.length); // Default to 10 or max available words
+            updateMaxCount();
+            wordCountInput.value = Math.min(10, parseInt(wordCountInput.max, 10));
             startButton.disabled = false;
             statusElement.textContent = 'Ready';
         })
@@ -28,33 +30,60 @@ document.addEventListener('DOMContentLoaded', () => {
             statusElement.textContent = 'Error loading nouns.txt.';
         });
 
+    inputTypeSelect.addEventListener('change', updateMaxCount);
+    wordCountInput.addEventListener('change', validateWordCount);
+
+    function updateMaxCount() {
+        currentType = inputTypeSelect.value;
+        if (currentType === 'words') {
+            wordCountInput.max = allWords.length;
+        } else {
+            wordCountInput.max = 108;
+        }
+        validateWordCount();
+    }
+
+    function validateWordCount() {
+        let currentCount = parseInt(wordCountInput.value, 10);
+        let maxCount = parseInt(wordCountInput.max, 10);
+        if (isNaN(currentCount) || currentCount < 1 || currentCount > maxCount) {
+            wordCountInput.value = Math.max(1, Math.min(currentCount, maxCount));
+        }
+    }
+
     startButton.addEventListener('click', () => {
         let wordCount = parseInt(wordCountInput.value, 10);
+        currentType = inputTypeSelect.value;
+        let maxCount = parseInt(wordCountInput.max, 10);
+
         wordList.innerHTML = '';
         textElement.textContent = '';
-        showWordsButton.textContent = 'Show List'; // Reset the button label
-        wordList.style.display = 'none'; // Ensure the word list is hidden
+        showWordsButton.textContent = 'Show List';
+        wordList.style.display = 'none';
 
-        if (isNaN(wordCount) || wordCount < 1 || wordCount > allWords.length) {
-            alert(`Enter a number between 1 and ${allWords.length}.`);
+        if (isNaN(wordCount) || wordCount < 1 || wordCount > maxCount) {
+            alert(`Enter a number between 1 and ${maxCount}.`);
             return;
         }
 
-        randomizedWords = shuffleArray(allWords).slice(0, wordCount);
+        if (currentType === 'words') {
+            currentItems = shuffleArray(allWords).slice(0, wordCount);
+        } else {
+            currentItems = generateRandomNumbers(wordCount);
+        }
+
         currentIndex = 0;
         startButton.disabled = true;
         showWordsButton.disabled = true;
         statusElement.textContent = 'Practicing...';
-
-        // Change the label to "New Session" after the first click
         startButton.textContent = 'New Session';
 
-        displayAndSpeakNextWord();
+        displayAndSpeakNextItem();
     });
 
     showWordsButton.addEventListener('click', () => {
         if (wordList.style.display === 'none' || wordList.style.display === '') {
-            displayWordList();
+            displayItemList();
             wordList.style.display = 'block';
             showWordsButton.textContent = 'Hide List';
         } else {
@@ -63,40 +92,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function displayWordList() {
-        wordList.innerHTML = randomizedWords.map(word => `<li>${word}</li>`).join('');
+    function displayItemList() {
+        wordList.innerHTML = currentItems.map(item => `<li>${item}</li>`).join('');
     }
 
-    function displayAndSpeakNextWord() {
-        if (currentIndex >= randomizedWords.length) {
+    function displayAndSpeakNextItem() {
+        if (currentIndex >= currentItems.length) {
             statusElement.textContent = 'Session complete!';
-            textElement.textContent = ''; // Clear the last word from the screen
+            textElement.textContent = '';
             startButton.disabled = false;
             showWordsButton.disabled = false;
-            return; // Exit the function if all words are displayed
+            return;
         }
 
-        const word = randomizedWords[currentIndex];
-        textElement.textContent = word;
+        const item = currentItems[currentIndex];
+        textElement.textContent = item;
 
-        // Use speech synthesis to speak the word
-        const utterance = new SpeechSynthesisUtterance(word);
-
-        // Use the default voice
+        const utterance = new SpeechSynthesisUtterance(item);
         speechSynthesis.speak(utterance);
 
         utterance.onend = () => {
-            // Wait for the speech to finish before proceeding to the next word
             currentIndex++;
-            if (currentIndex < randomizedWords.length) {
-                setTimeout(displayAndSpeakNextWord, parseInt(delayInput.value, 10) * 1000);
+            if (currentIndex < currentItems.length) {
+                setTimeout(displayAndSpeakNextItem, parseInt(delayInput.value, 10) * 1000);
             } else {
                 statusElement.textContent = 'Session complete!';
-                textElement.textContent = ''; // Clear the last word from the screen
+                textElement.textContent = '';
                 startButton.disabled = false;
                 showWordsButton.disabled = false;
             }
         };
+    }
+
+    function generateRandomNumbers(count) {
+        // Define the full pool of possible number strings
+        const numberPool = [];
+        // Add single digits 1-9
+        for (let i = 1; i <= 9; i++) {
+            numberPool.push(String(i));
+        }
+        // Add double digits 01-09
+        for (let i = 1; i <= 9; i++) {
+            numberPool.push(String(i).padStart(2, '0'));
+        }
+        // Add double digits 10-99
+        for (let i = 10; i <= 99; i++) {
+            numberPool.push(String(i));
+        }
+
+        // Shuffle the pool
+        const shuffledPool = shuffleArray(numberPool);
+
+        // Take the first 'count' items
+        return shuffledPool.slice(0, count);
     }
 
     function shuffleArray(array) {

@@ -49,6 +49,16 @@ ol#wordList {
     text-align: left; /* Left-justify the word list */
 }
 
+/* Style the numbers (markers) of the ordered list */
+ol#wordList li::marker {
+    color: lightgray; /* Set the color of the list numbers to light gray */
+}
+
+/* Style the content of the list items */
+ol#wordList li {
+    font-weight: bold; /* Make the word/number itself bold */
+}
+
 /* Status message styles */
 p#status {
     font-weight: bold;
